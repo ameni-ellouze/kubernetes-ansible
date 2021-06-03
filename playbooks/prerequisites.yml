@@ -41,12 +41,11 @@
         net.bridge.bridge-nf-call-iptables = 1 
     ignore_errors: yes
 
-  - name: Setting SELinux to permessive mode (CentOS)
+  - name: Setting SELinux to permessive mode 
     become: yes
     shell: |
       setenforce 0
       sed -i s/^SELINUX=.*$/SELINUX=permissive/ /etc/selinux/config
-    when: ansible_os_family in ["CentOS","RedHat"]
     ignore_errors: yes
 
 

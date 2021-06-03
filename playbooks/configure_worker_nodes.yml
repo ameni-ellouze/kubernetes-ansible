@@ -11,4 +11,3 @@
      kubeadm reset -f
      cat /home/{{user}}/join_token | tail -2 > out.sh
      sh out.sh
-
