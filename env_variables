@@ -1,0 +1,8 @@
+cluster_adr: 10.241.109.80
+
+packages:
+- kubeadm
+- kubectl
+
+
+token_file: join_token
