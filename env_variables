@@ -1,8 +1,5 @@
-cluster_adr: 10.241.109.80
+cluster_adr: 192.168.1.15
 
-packages:
-- kubeadm
-- kubectl
-
+UBUNTU_K8S_VERSION: 1.19.0-00
 
 token_file: join_token
