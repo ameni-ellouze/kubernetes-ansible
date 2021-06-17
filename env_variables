@@ -3,3 +3,11 @@ cluster_adr: 192.168.1.15
 UBUNTU_K8S_VERSION: 1.19.0-00
 
 token_file: join_token
+
+POD_NETWORK : weavenet
+
+LetEncrypytEmail : ameni.ellouze@supcom.tn
+
+INGRESS_URL: https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.0/deploy/static/provider/cloud/deploy.yaml
+OPENEBES_URL: https://openebs.github.io/charts/openebs-operator.yaml
+CERTMANAGER_URL: https://github.com/jetstack/cert-manager/releases/download/v0.12.0/cert-manager.yaml
