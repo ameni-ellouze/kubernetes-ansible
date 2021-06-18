@@ -3,35 +3,37 @@
     - ../env_variables 
   tasks:
 
-    - name: Add Hostname to /etc/hosts
-      become: yes
-      shell: grep -q 'k8s' /etc/hosts && echo exists || echo "{{ansible_host}} {{ansible_hostname}}" >> /etc/hosts
-      register: result
-      changed_when: result.stdout.find('exists') == -1
+    #- name: Add Hostname to /etc/hosts
+    #  become: yes
+    #  shell: grep -q 'k8s' /etc/hosts && echo exists || echo "{{ansible_host}} {{ansible_hostname}}" >> /etc/hosts
+    #  register: result
+    #  changed_when: result.stdout.find('exists') == -1
 
-    - name: Installing Dependencies (Ubuntu)
+    - name: Installing Dependencies (CentOS)
       become: yes
-      apt:
-        name: [curl, wget, lvm2]
+      yum:
+        name: [yum-utils, device-mapper-persistent-data, lvm2, wget]
         state: latest
 
-    - name: Creating a repository file for Kubernetes (Ubuntu)
+    - name: Creating a repository file for Kubernetes (CentOS)
       become: yes
       file:
-       path: /etc/apt/sources.list.d/kubernetes.list
-       state: touch
+        path: /etc/yum.repos.d/kubernetes.repo
+        state: touch
 
-    - name: Adding Kubernetes repository gpg key (Ubuntu)
-      become: yes
-      shell: |
-        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-
-    - name: Adding repository details in Kubernetes repo file  (Ubuntu)
+    - name: Adding repository details in Kubernetes repo file (CentOS)
       become: yes
       blockinfile:
-        path: /etc/apt/sources.list.d/kubernetes.list
+        path: /etc/yum.repos.d/kubernetes.repo
         block: |
-          deb https://apt.kubernetes.io/ kubernetes-xenial main
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+  
 
 
     - name: Installing Docker
@@ -40,15 +42,15 @@
         curl -fsSL https://get.docker.com -o get-docker.sh
         chmod +x get-docker.sh
         ./get-docker.sh
-      environment: "{{ proxy_env }}"
 
     - name: Installing Container SELinux (CentOS)
       become: yes
       yum:
         name: http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.107-1.el7_6.noarch.rpm
-        state: present  
+        state: present
+      
 
-    - name: Changing docker defaul cgroup.
+    - name: Changing docker default cgroup.
       become: yes
       shell: |
         mkdir -p /etc/docker
@@ -81,21 +83,17 @@
         systemctl daemon-reload
         systemctl restart docker
 
-    - name: Installing Kubernetes (Ubuntu)
+    - name: Installing Kubernetes (CentOS)
       become: yes
-      apt:
+      yum:
         name: "{{ packages }}"
         state: present 
         update_cache: yes
       vars:
         packages:
-        - kubectl={{ UBUNTU_K8S_VERSION }}
-        - kubeadm={{ UBUNTU_K8S_VERSION }}
-        - kubelet={{ UBUNTU_K8S_VERSION }}
-
-    - name: Prevent kubeadm, kubectl, kubelet from upgrading
-      become: yes
-      shell:  apt-mark hold kubelet kubeadm kubectl
+        - kubectl-{{ CENTOS_K8S_VERSION }}
+        - kubeadm-{{ CENTOS_K8S_VERSION }}
+        - kubelet-{{ CENTOS_K8S_VERSION }}
 
 
     - name: Starting and Enabling docker service
