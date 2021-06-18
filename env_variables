@@ -1,12 +1,12 @@
-cluster_adr: 10.241.109.80
+cluster_adr: 
 
-UBUNTU_K8S_VERSION: 1.19.0-00
+CENTOS_K8S_VERSION: 1.19.0-00
 
 token_file: join_token
 
 POD_NETWORK : weavenet
 
-LetEncrypytEmail : ameni.ellouze@supcom.tn
+LetEncrypytEmail : 
 
 INGRESS_URL: https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.0/deploy/static/provider/cloud/deploy.yaml
 OPENEBES_URL: https://openebs.github.io/charts/openebs-operator.yaml
