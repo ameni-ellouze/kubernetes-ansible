@@ -1,6 +1,6 @@
 cluster_adr: 
 
-CENTOS_K8S_VERSION: 1.19.0-00
+CENTOS_K8S_VERSION: 
 
 token_file: join_token
 
