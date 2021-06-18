@@ -1,0 +1,11 @@
+[kubernetes-master-nodes]
+master ansible_host=
+
+[kubernetes-worker-nodes]
+worker1 ansible_host= 
+worker2 ansible_host=
+
+[all:vars]
+ansible_user=root
+
+ansible_sudo_pass=s
